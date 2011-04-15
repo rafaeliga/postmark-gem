@@ -146,9 +146,11 @@ module Postmark
       message.header.fields.each do |field|
         key = field.name
         value = field.value
-        next if bogus_headers.include? key.dup.downcase
-        name = key.split(/-/).map {|i| i.capitalize }.join('-')
-        headers << { "Name" => name, "Value" => value }
+        unless key.blank?
+          next if bogus_headers.include? key.dup.downcase
+          name = key.split(/-/).map {|i| i.capitalize }.join('-')
+          headers << { "Name" => name, "Value" => value }
+        end
       end
       headers
     end
